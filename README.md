@@ -2,6 +2,7 @@
 
 > A type-safe, DB-agnostic query builder for TypeScript, inspired by LINQ in C# with Entity Framework.
 
+[![npm version](https://img.shields.io/npm/v/fluent-query-builder.svg)](https://www.npmjs.com/package/fluent-query-builder)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
