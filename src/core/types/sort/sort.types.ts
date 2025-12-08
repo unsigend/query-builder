@@ -38,15 +38,15 @@ export enum SortDirection {
  * @description This interface defines the sort order for a query.
  * @example
  * ```ts
- * const sort: Sort<{ name: string; age: number }> = {
+ * const sort: Sort = {
  *   field: "name",
  *   direction: SortDirection.ASC,
  * };
  * ```
  */
-export interface Sort<T = unknown> {
+export interface Sort {
   /* The field name to sort on */
-  field: keyof T;
+  field: string;
   /* The direction to sort on */
   direction: SortDirection;
 }

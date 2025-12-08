@@ -27,8 +27,7 @@
  * @description This type defines the include options for a query.
  * @example
  * ```ts
- * const includes: Include<User>[] = ["base"];
- * const includes: Include<UserBase>[] = ["user", "addresses"];
+ * const includes: Include[] = ["user", "addresses"];
  * ```
  */
-export type Include<T = unknown> = keyof T;
+export type Include = string;
