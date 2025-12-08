@@ -26,9 +26,24 @@
  * Query Builder
  * @description A type-safe, DB-agnostic query builder with typescript
  */
+
+// Core Query Builder
+export { QueryBuilder } from "./core/query.builder";
+
+// Filter Types
 export { ConditionOperator, LogicalOperator } from "./core/types/filter/filter-operator.type";
 export type { Filter, FilterGroup } from "./core/types/filter/filter.types";
-export type { SortDirection, Sort } from "./core/types/sort/sort.types";
+
+// Sort Types
+export { SortDirection } from "./core/types/sort/sort.types";
+export type { Sort } from "./core/types/sort/sort.types";
+
+// Include Types
 export type { Include } from "./core/types/include/include.types";
+
+// Pagination Types
 export type { Pagination } from "./core/types/pagination/pagination.types";
-export type { PaginationResult } from "./core/types/pagination/pagination-result.types";
+export type { PaginatedResult } from "./core/types/pagination/pagination-result.types";
+
+// Prisma Provider
+export * from "./providers/prisma";
