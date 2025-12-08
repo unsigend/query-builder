@@ -49,15 +49,136 @@ const prismaQuery = PrismaTranslator.translate(query);
 const users = await prisma.user.findMany(prismaQuery);
 ```
 
-## API Documentation
+## Usage Guide
+
+### Basic Filtering with `where()`
+
+The `where()` method is the simplest way to add filter conditions. Each call adds an AND condition.
+
+```typescript
+import { QueryBuilder, ConditionOperator } from "fluent-query-builder";
+
+// Simple equality check
+const query1 = QueryBuilder.create().where("email", ConditionOperator.EQ, "user@example.com");
+
+// Multiple conditions (AND by default)
+const query2 = QueryBuilder.create()
+  .where("status", ConditionOperator.EQ, "active")
+  .where("age", ConditionOperator.GTE, 18);
+
+// Using different operators
+const query3 = QueryBuilder.create()
+  .where("name", ConditionOperator.LIKE, "John%")
+  .where("age", ConditionOperator.IN, [18, 19, 20])
+  .where("deletedAt", ConditionOperator.IS_NULL);
+```
+
+### Complex Filtering with `filter()`
+
+Use `filter()` for complex nested conditions with explicit logical operators (AND, OR, NOT).
+
+```typescript
+import { QueryBuilder, ConditionOperator, LogicalOperator } from "fluent-query-builder";
+
+// OR condition
+const query1 = QueryBuilder.create().filter({
+  operator: LogicalOperator.OR,
+  conditions: [
+    { field: "status", operator: ConditionOperator.EQ, value: "active" },
+    { field: "status", operator: ConditionOperator.EQ, value: "pending" },
+  ],
+});
+
+// Nested conditions
+const query2 = QueryBuilder.create().filter({
+  operator: LogicalOperator.AND,
+  conditions: [
+    { field: "status", operator: ConditionOperator.EQ, value: "active" },
+    {
+      operator: LogicalOperator.OR,
+      conditions: [
+        { field: "role", operator: ConditionOperator.EQ, value: "admin" },
+        { field: "role", operator: ConditionOperator.EQ, value: "moderator" },
+      ],
+    },
+  ],
+});
+```
+
+### Sorting
+
+Add one or more sort orders to your query.
+
+```typescript
+import { QueryBuilder, SortDirection } from "fluent-query-builder";
+
+// Single sort
+const query1 = QueryBuilder.create().sortBy("createdAt", SortDirection.DESC);
+
+// Multiple sorts
+const query2 = QueryBuilder.create()
+  .sortBy("name", SortDirection.ASC)
+  .sortBy("createdAt", SortDirection.DESC);
+```
+
+### Pagination
+
+Control the number of results and which page to return.
+
+```typescript
+import { QueryBuilder } from "fluent-query-builder";
+
+// Page 1, 10 items per page (default)
+const query1 = QueryBuilder.create();
+
+// Page 2, 20 items per page
+const query2 = QueryBuilder.create().paginate(2, 20);
+```
+
+### Including Relations
+
+Include related data in your query results.
+
+```typescript
+import { QueryBuilder } from "fluent-query-builder";
+
+const query = QueryBuilder.create().include("posts").include("profile").include("comments");
+```
+
+### Complete Example with Prisma
+
+```typescript
+import { QueryBuilder, ConditionOperator, SortDirection } from "fluent-query-builder";
+import { PrismaTranslator } from "fluent-query-builder";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+async function getActiveUsers() {
+  // Build the query
+  const query = QueryBuilder.create()
+    .where("status", ConditionOperator.EQ, "active")
+    .where("age", ConditionOperator.GTE, 18)
+    .sortBy("createdAt", SortDirection.DESC)
+    .paginate(1, 10)
+    .include("posts")
+    .include("profile");
+
+  // Translate to Prisma format
+  const prismaQuery = PrismaTranslator.translate(query);
+
+  // Execute the query
+  return await prisma.user.findMany(prismaQuery);
+}
+```
+
+## API Reference
 
 ### QueryBuilder
 
 The main class for building queries. All methods return a new `QueryBuilder` instance.
 
-#### Static Methods
-
-##### `QueryBuilder.create(): QueryBuilder`
+#### `QueryBuilder.create(): QueryBuilder`
 
 Creates a new `QueryBuilder` instance with default pagination (page: 1, limit: 10).
 
@@ -65,23 +186,19 @@ Creates a new `QueryBuilder` instance with default pagination (page: 1, limit: 1
 const query = QueryBuilder.create();
 ```
 
-#### Instance Methods
+#### `where(field: string, operator: ConditionOperator, value: unknown): QueryBuilder`
 
-##### `where(field: string, operator: ConditionOperator, value: unknown): QueryBuilder`
-
-Adds a filter condition to the query.
+Adds a simple filter condition. Multiple `where()` calls are combined with AND.
 
 ```typescript
 query.where("email", ConditionOperator.EQ, "user@example.com");
 ```
 
-##### `filter(filter: Filter | FilterGroup): QueryBuilder`
+#### `filter(filter: Filter | FilterGroup): QueryBuilder`
 
-Adds a filter or filter group to the query. Useful for complex nested conditions.
+Adds a filter or filter group for complex nested conditions with explicit logical operators.
 
 ```typescript
-import { LogicalOperator } from "fluent-query-builder";
-
 query.filter({
   operator: LogicalOperator.AND,
   conditions: [
@@ -91,31 +208,31 @@ query.filter({
 });
 ```
 
-##### `sortBy(field: string, direction: SortDirection): QueryBuilder`
+#### `sortBy(field: string, direction: SortDirection): QueryBuilder`
 
-Adds a sort order to the query. Can be called multiple times for multi-field sorting.
-
-```typescript
-query.sortBy("name", SortDirection.ASC).sortBy("createdAt", SortDirection.DESC);
-```
-
-##### `include(include: Include): QueryBuilder`
-
-Adds a relation to include in the query. Can be called multiple times.
+Adds a sort order. Can be called multiple times for multi-field sorting.
 
 ```typescript
-query.include("posts").include("comments");
+query.sortBy("name", SortDirection.ASC);
 ```
 
-##### `paginate(page: number, limit: number): QueryBuilder`
+#### `include(include: Include): QueryBuilder`
+
+Adds a relation to include. Can be called multiple times.
+
+```typescript
+query.include("posts");
+```
+
+#### `paginate(page: number, limit: number): QueryBuilder`
 
 Sets pagination parameters. Throws an error if page < 1 or limit is not between 1 and 1000.
 
 ```typescript
-query.paginate(2, 20); // Page 2, 20 items per page
+query.paginate(2, 20);
 ```
 
-##### Getters
+#### Getters
 
 - `getFilters(): (Filter | FilterGroup)[]` - Returns all filters
 - `getSorts(): Sort[]` - Returns all sort orders
@@ -192,6 +309,7 @@ const prismaQuery = PrismaTranslator.translate(query);
 Full support for Prisma ORM. Use `PrismaTranslator` to convert queries to Prisma format.
 
 ```typescript
+import { QueryBuilder, ConditionOperator } from "fluent-query-builder";
 import { PrismaTranslator } from "fluent-query-builder";
 
 const query = QueryBuilder.create().where("status", ConditionOperator.EQ, "active").paginate(1, 10);
@@ -204,63 +322,6 @@ const results = await prisma.user.findMany(prismaQuery);
 
 - TypeORM
 - Mongoose
-
-## Examples
-
-### Basic Filtering
-
-```typescript
-const query = QueryBuilder.create()
-  .where("email", ConditionOperator.EQ, "user@example.com")
-  .where("age", ConditionOperator.GTE, 18);
-```
-
-### Complex Filter Groups
-
-```typescript
-import { LogicalOperator } from "fluent-query-builder";
-
-const query = QueryBuilder.create()
-  .filter({
-    operator: LogicalOperator.OR,
-    conditions: [
-      { field: "status", operator: ConditionOperator.EQ, value: "active" },
-      { field: "status", operator: ConditionOperator.EQ, value: "pending" },
-    ],
-  })
-  .where("age", ConditionOperator.GTE, 18);
-```
-
-### Sorting and Pagination
-
-```typescript
-const query = QueryBuilder.create()
-  .sortBy("name", SortDirection.ASC)
-  .sortBy("createdAt", SortDirection.DESC)
-  .paginate(1, 20);
-```
-
-### Using with Prisma
-
-```typescript
-import { QueryBuilder, ConditionOperator, SortDirection } from "fluent-query-builder";
-import { PrismaTranslator } from "fluent-query-builder";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
-async function getUsers() {
-  const query = QueryBuilder.create()
-    .where("status", ConditionOperator.EQ, "active")
-    .sortBy("createdAt", SortDirection.DESC)
-    .paginate(1, 10)
-    .include("posts")
-    .include("profile");
-
-  const prismaQuery = PrismaTranslator.translate(query);
-  return await prisma.user.findMany(prismaQuery);
-}
-```
 
 ## Contributing
 
