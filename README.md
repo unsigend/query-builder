@@ -86,8 +86,8 @@ query.filter({
   operator: LogicalOperator.AND,
   conditions: [
     { field: "status", operator: ConditionOperator.EQ, value: "active" },
-    { field: "age", operator: ConditionOperator.GTE, value: 18 }
-  ]
+    { field: "age", operator: ConditionOperator.GTE, value: 18 },
+  ],
 });
 ```
 
@@ -96,8 +96,7 @@ query.filter({
 Adds a sort order to the query. Can be called multiple times for multi-field sorting.
 
 ```typescript
-query.sortBy("name", SortDirection.ASC)
-     .sortBy("createdAt", SortDirection.DESC);
+query.sortBy("name", SortDirection.ASC).sortBy("createdAt", SortDirection.DESC);
 ```
 
 ##### `include(include: Include): QueryBuilder`
@@ -195,9 +194,7 @@ Full support for Prisma ORM. Use `PrismaTranslator` to convert queries to Prisma
 ```typescript
 import { PrismaTranslator } from "query-builder";
 
-const query = QueryBuilder.create()
-  .where("status", ConditionOperator.EQ, "active")
-  .paginate(1, 10);
+const query = QueryBuilder.create().where("status", ConditionOperator.EQ, "active").paginate(1, 10);
 
 const prismaQuery = PrismaTranslator.translate(query);
 const results = await prisma.user.findMany(prismaQuery);
@@ -228,8 +225,8 @@ const query = QueryBuilder.create()
     operator: LogicalOperator.OR,
     conditions: [
       { field: "status", operator: ConditionOperator.EQ, value: "active" },
-      { field: "status", operator: ConditionOperator.EQ, value: "pending" }
-    ]
+      { field: "status", operator: ConditionOperator.EQ, value: "pending" },
+    ],
   })
   .where("age", ConditionOperator.GTE, 18);
 ```
@@ -292,27 +289,3 @@ To add support for a new database provider:
 2. Implement translation methods for filters, sorts, includes, and pagination
 3. Export the translator from `src/providers/[provider-name]/index.ts`
 4. Update this README with provider documentation
-
-## License
-
-MIT License
-
-Copyright (c) 2025 Yixiang Qiu
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
