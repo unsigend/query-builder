@@ -1,4 +1,4 @@
-# query-builder
+# fluent-query-builder
 
 > A type-safe, DB-agnostic query builder for TypeScript, inspired by LINQ in C# with Entity Framework.
 
@@ -7,7 +7,7 @@
 
 ## Overview
 
-`query-builder` provides a fluent, type-safe API for building database queries that works across different database providers. The core query builder is database-agnostic, while provider-specific translators convert queries to the appropriate format (e.g., Prisma, TypeORM, Mongoose).
+`fluent-query-builder` provides a fluent, type-safe API for building database queries that works across different database providers. The core query builder is database-agnostic, while provider-specific translators convert queries to the appropriate format (e.g., Prisma, TypeORM, Mongoose).
 
 ### Key Features
 
@@ -20,7 +20,7 @@
 ## Installation
 
 ```bash
-npm install query-builder
+npm install fluent-query-builder
 ```
 
 **Prerequisites**: TypeScript 5.0+ and Node.js 18+
@@ -28,8 +28,8 @@ npm install query-builder
 ## Quick Start
 
 ```typescript
-import { QueryBuilder, ConditionOperator, SortDirection } from "query-builder";
-import { PrismaTranslator } from "query-builder";
+import { QueryBuilder, ConditionOperator, SortDirection } from "fluent-query-builder";
+import { PrismaTranslator } from "fluent-query-builder";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -80,7 +80,7 @@ query.where("email", ConditionOperator.EQ, "user@example.com");
 Adds a filter or filter group to the query. Useful for complex nested conditions.
 
 ```typescript
-import { LogicalOperator } from "query-builder";
+import { LogicalOperator } from "fluent-query-builder";
 
 query.filter({
   operator: LogicalOperator.AND,
@@ -192,7 +192,7 @@ const prismaQuery = PrismaTranslator.translate(query);
 Full support for Prisma ORM. Use `PrismaTranslator` to convert queries to Prisma format.
 
 ```typescript
-import { PrismaTranslator } from "query-builder";
+import { PrismaTranslator } from "fluent-query-builder";
 
 const query = QueryBuilder.create().where("status", ConditionOperator.EQ, "active").paginate(1, 10);
 
@@ -218,7 +218,7 @@ const query = QueryBuilder.create()
 ### Complex Filter Groups
 
 ```typescript
-import { LogicalOperator } from "query-builder";
+import { LogicalOperator } from "fluent-query-builder";
 
 const query = QueryBuilder.create()
   .filter({
@@ -243,8 +243,8 @@ const query = QueryBuilder.create()
 ### Using with Prisma
 
 ```typescript
-import { QueryBuilder, ConditionOperator, SortDirection } from "query-builder";
-import { PrismaTranslator } from "query-builder";
+import { QueryBuilder, ConditionOperator, SortDirection } from "fluent-query-builder";
+import { PrismaTranslator } from "fluent-query-builder";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -264,28 +264,4 @@ async function getUsers() {
 
 ## Contributing
 
-Contributions are welcome! This project follows best practices for TypeScript, DDD, and hexagonal architecture.
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Code Style
-
-- Follow TypeScript best practices
-- Use ESLint and Prettier (configuration included)
-- Write clear JSDoc comments for public APIs
-- Add tests for new features
-
-### Adding Database Providers
-
-To add support for a new database provider:
-
-1. Create a new translator class in `src/providers/[provider-name]/`
-2. Implement translation methods for filters, sorts, includes, and pagination
-3. Export the translator from `src/providers/[provider-name]/index.ts`
-4. Update this README with provider documentation
+Contributions are welcome! Please feel free to submit a Pull Request.

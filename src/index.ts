@@ -23,7 +23,7 @@
  */
 
 /**
- * Query Builder
+ * Fluent Query Builder
  * @description A type-safe, DB-agnostic query builder with typescript
  */
 

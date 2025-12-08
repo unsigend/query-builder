@@ -1,7 +1,8 @@
 {
-  "name": "query-builder",
-  "version": "1.0.0",
-  "description": "Type-safe, DB-agnostic query builder with typescript",
+  "name": "fluent-query-builder",
+  "version": "1.0.1",
+  "description": "A type-safe, DB-agnostic query builder for TypeScript inspired by LINQ. Build database queries with a fluent API that works across Prisma, TypeORM, and more.",
+  "readme": "README.md",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -25,19 +26,35 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/unsigned/query-builder.git"
+    "url": "git+https://github.com/unsigend/query-builder.git"
+  },
+  "homepage": "https://github.com/unsigend/query-builder#readme",
+  "bugs": {
+    "url": "https://github.com/unsigend/query-builder/issues"
   },
   "keywords": [
-    "typeORM",
-    "prisma",
     "query-builder",
+    "query",
+    "builder",
     "typescript",
+    "type-safe",
+    "prisma",
+    "typeorm",
+    "mongoose",
+    "orm",
+    "database",
+    "linq",
+    "fluent-api",
     "ddd",
+    "domain-driven-design",
     "hexagonal-architecture",
     "repository-pattern",
-    "type-safe"
+    "database-agnostic",
+    "db-agnostic",
+    "typescript-library",
+    "query-interface"
   ],
-  "author": "yixiang qiu",
+  "author": "Yixiang Qiu",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
