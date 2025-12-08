@@ -21,3 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Sort direction type for query sort
+ * @description These directions define how to sort the results of a query.
+ */
+export enum SortDirection {
+  /* Ascending: Sorts in ascending order */
+  ASC = "ASC",
+  /* Descending: Sorts in descending order */
+  DESC = "DESC",
+}
+
+/**
+ * Sort object interface
+ * @description This interface defines the sort order for a query.
+ * @example
+ * ```ts
+ * const sort: Sort<{ name: string; age: number }> = {
+ *   field: "name",
+ *   direction: SortDirection.ASC,
+ * };
+ * ```
+ */
+export interface Sort<T = unknown> {
+  /* The field name to sort on */
+  field: keyof T;
+  /* The direction to sort on */
+  direction: SortDirection;
+}

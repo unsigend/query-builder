@@ -21,3 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Pagination interface
+ * @description This interface defines the pagination parameters for a query.
+ * @example
+ * ```ts
+ * const pagination: Pagination = {
+ *   page: 1,
+ *   limit: 10,
+ * };
+ * ```
+ */
+export interface Pagination {
+  /* The page number to paginate to */
+  page: number;
+  /* The number of items to return per page */
+  limit: number;
+}

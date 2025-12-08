@@ -21,3 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Include type
+ * @description This type defines the include options for a query.
+ * @example
+ * ```ts
+ * const includes: Include<User>[] = ["base"];
+ * const includes: Include<UserBase>[] = ["user", "addresses"];
+ * ```
+ */
+export type Include<T = unknown> = keyof T;

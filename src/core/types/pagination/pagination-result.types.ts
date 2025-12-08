@@ -21,3 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+/**
+ * Pagination result interface
+ * @description This interface defines the pagination result for a query.
+ * @example
+ * ```ts
+ * const paginationResult: PaginationResult<{ name: string; age: number }> = {
+ *   items: [{ name: "John", age: 30 }, { name: "Jane", age: 25 }],
+ *   meta: {
+ *     currentPage: 1,
+ *     pageSize: 10,
+ *     totalItems: 20,
+ *     totalPages: 2,
+ *     hasNextPage: true,
+ *     hasPreviousPage: false,
+ *   },
+ * };
+ * ```
+ */
+export interface PaginationResult<T> {
+  /* The items to return */
+  items: T[];
+
+  /* The metadata for the pagination result */
+  meta: {
+    /* The current page number */
+    currentPage: number;
+    /* The number of items per page */
+    pageSize: number;
+    /* The total number of items */
+    totalItems: number;
+    /* The total number of pages */
+    totalPages: number;
+    /* Whether there is a next page */
+    hasNextPage: boolean;
+    /* Whether there is a previous page */
+    hasPreviousPage: boolean;
+  };
+}
