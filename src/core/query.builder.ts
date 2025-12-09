@@ -52,12 +52,16 @@ export class QueryBuilder {
   /* The meta information for the query */
   private readonly _meta: QueryConfigMeta;
 
-  /* The default page number */
-  private static readonly _DEFAULT_PAGE = 1;
+  /* The default page index */
+  public static readonly DEFAULT_PAGE_INDEX: number = 1;
+  /* The minimum page index */
+  public static readonly DEFAULT_MIN_PAGE_INDEX: number = 1;
   /* The default limit number */
-  private static readonly _DEFAULT_LIMIT = 10;
+  public static readonly DEFAULT_PAGE_SIZE: number = 10;
+  /* The minimum limit number */
+  public static readonly DEFAULT_MIN_PAGE_SIZE: number = 1;
   /* The maximum limit number */
-  private static readonly _MAX_LIMIT = 1000;
+  public static readonly DEFAULT_MAX_PAGE_SIZE: number = 1000;
 
   /**
    * Constructor
@@ -79,8 +83,8 @@ export class QueryBuilder {
       sorts: [],
       includes: [],
       pagination: {
-        page: this._DEFAULT_PAGE,
-        limit: this._DEFAULT_LIMIT,
+        page: QueryBuilder.DEFAULT_PAGE_INDEX,
+        limit: QueryBuilder.DEFAULT_PAGE_SIZE,
       },
     });
   }
@@ -152,8 +156,8 @@ export class QueryBuilder {
     if (page < 1) {
       throw new Error("Page must be >= 1");
     }
-    if (limit < 1 || limit > QueryBuilder._MAX_LIMIT) {
-      throw new Error(`Limit must be between 1 and ${QueryBuilder._MAX_LIMIT}`);
+    if (limit < 1 || limit > QueryBuilder.DEFAULT_MAX_PAGE_SIZE) {
+      throw new Error(`Limit must be between 1 and ${QueryBuilder.DEFAULT_MAX_PAGE_SIZE}`);
     }
     return new QueryBuilder({
       ...this._meta,
@@ -213,32 +217,5 @@ export class QueryBuilder {
    */
   public getLimit(): number {
     return this._meta.pagination.limit;
-  }
-
-  /**
-   * Get the default page size
-   * @description This method is used to get the default page size.
-   * @returns The default page size.
-   */
-  public getDefaultPageSize(): number {
-    return QueryBuilder._DEFAULT_LIMIT;
-  }
-
-  /**
-   * Get the maximum page size
-   * @description This method is used to get the maximum page size.
-   * @returns The maximum page size.
-   */
-  public getMaxPageSize(): number {
-    return QueryBuilder._MAX_LIMIT;
-  }
-
-  /**
-   * Get the default page
-   * @description This method is used to get the default page.
-   * @returns The default page.
-   */
-  public getDefaultPage(): number {
-    return QueryBuilder._DEFAULT_PAGE;
   }
 }
