@@ -214,4 +214,31 @@ export class QueryBuilder {
   public getLimit(): number {
     return this._meta.pagination.limit;
   }
+
+  /**
+   * Get the default page size
+   * @description This method is used to get the default page size.
+   * @returns The default page size.
+   */
+  public getDefaultPageSize(): number {
+    return QueryBuilder._DEFAULT_LIMIT;
+  }
+
+  /**
+   * Get the maximum page size
+   * @description This method is used to get the maximum page size.
+   * @returns The maximum page size.
+   */
+  public getMaxPageSize(): number {
+    return QueryBuilder._MAX_LIMIT;
+  }
+
+  /**
+   * Get the default page
+   * @description This method is used to get the default page.
+   * @returns The default page.
+   */
+  public getDefaultPage(): number {
+    return QueryBuilder._DEFAULT_PAGE;
+  }
 }

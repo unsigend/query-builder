@@ -1,6 +1,6 @@
 {
   "name": "fluent-query-builder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A type-safe, DB-agnostic query builder for TypeScript inspired by LINQ. Build database queries with a fluent API that works across Prisma, TypeORM, and more.",
   "readme": "README.md",
   "main": "./dist/index.js",
