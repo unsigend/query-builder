@@ -72,6 +72,11 @@ const query3 = QueryBuilder.create()
   .where("name", ConditionOperator.LIKE, "John%")
   .where("age", ConditionOperator.IN, [18, 19, 20])
   .where("deletedAt", ConditionOperator.IS_NULL);
+
+// Nested field filtering with dot notation for relations
+const query4 = QueryBuilder.create()
+  .where("profile.email", ConditionOperator.EQ, "user@example.com")
+  .where("profile.age", ConditionOperator.GTE, 18);
 ```
 
 ### Complex Filtering with `filter()`
@@ -104,6 +109,20 @@ const query2 = QueryBuilder.create().filter({
     },
   ],
 });
+
+// Nested field filtering with relations
+const query3 = QueryBuilder.create().filter({
+  operator: LogicalOperator.OR,
+  conditions: [
+    { field: "base.email", operator: ConditionOperator.ILIKE, value: "%search%" },
+    { field: "base.username", operator: ConditionOperator.ILIKE, value: "%search%" },
+  ],
+});
+
+// Deep nested relations with multiple levels
+const query4 = QueryBuilder.create()
+  .where("user.profile.email", ConditionOperator.EQ, "user@example.com")
+  .where("user.profile.age", ConditionOperator.GTE, 18);
 ```
 
 ### Sorting
@@ -120,6 +139,14 @@ const query1 = QueryBuilder.create().sortBy("createdAt", SortDirection.DESC);
 const query2 = QueryBuilder.create()
   .sortBy("name", SortDirection.ASC)
   .sortBy("createdAt", SortDirection.DESC);
+
+// Nested field sorting with dot notation for relations
+const query3 = QueryBuilder.create()
+  .sortBy("profile.name", SortDirection.ASC)
+  .sortBy("profile.createdAt", SortDirection.DESC);
+
+// Deep nested relations with multiple levels
+const query4 = QueryBuilder.create().sortBy("user.profile.email", SortDirection.ASC);
 ```
 
 ### Pagination
@@ -189,10 +216,11 @@ const query = QueryBuilder.create();
 
 #### `where(field: string, operator: ConditionOperator, value: unknown): QueryBuilder`
 
-Adds a simple filter condition. Multiple `where()` calls are combined with AND.
+Adds a simple filter condition. Multiple `where()` calls are combined with AND. Supports nested fields using dot notation (e.g., `"profile.email"`, `"user.profile.name"`).
 
 ```typescript
 query.where("email", ConditionOperator.EQ, "user@example.com");
+query.where("profile.email", ConditionOperator.EQ, "user@example.com");
 ```
 
 #### `filter(filter: Filter | FilterGroup): QueryBuilder`
@@ -211,10 +239,11 @@ query.filter({
 
 #### `sortBy(field: string, direction: SortDirection): QueryBuilder`
 
-Adds a sort order. Can be called multiple times for multi-field sorting.
+Adds a sort order. Can be called multiple times for multi-field sorting. Supports nested fields using dot notation (e.g., `"profile.name"`, `"user.profile.email"`).
 
 ```typescript
 query.sortBy("name", SortDirection.ASC);
+query.sortBy("profile.name", SortDirection.ASC);
 ```
 
 #### `include(include: Include): QueryBuilder`
